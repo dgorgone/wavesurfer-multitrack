@@ -3,11 +3,12 @@ import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
 import nodeResolve from '@rollup/plugin-node-resolve'
 
-const plugins = [typescript(), terser(), nodeResolve()]
+const plugins = [typescript(), nodeResolve()]
+const pluginsMin = [typescript(), terser(), nodeResolve()]
 const input = 'src/multitrack.ts'
 
 export default [
-  // ES module
+  // ES module (non-minified)
   {
     input,
     output: {
@@ -16,7 +17,7 @@ export default [
     },
     plugins,
   },
-  // CommonJS module (Node.js)
+  // CommonJS module (Node.js, non-minified)
   {
     input,
     output: {
@@ -26,7 +27,18 @@ export default [
     },
     plugins,
   },
-  // UMD (browser script tag)
+  // UMD (browser script tag, non-minified)
+  {
+    input,
+    output: {
+      name: 'Multitrack',
+      file: 'dist/multitrack.umd.js',
+      format: 'umd',
+      exports: 'default',
+    },
+    plugins,
+  },
+  // UMD (browser script tag, minified)
   {
     input,
     output: {
@@ -35,6 +47,6 @@ export default [
       format: 'umd',
       exports: 'default',
     },
-    plugins,
+    plugins: pluginsMin,
   },
 ]
