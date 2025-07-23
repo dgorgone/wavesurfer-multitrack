@@ -17,7 +17,7 @@ export type TrackId = string | number
 
 type SingleTrackOptions = Omit<
   WaveSurferOptions,
-  'container' | 'minPxPerSec' | 'duration' | 'cursorColor' | 'cursorWidth' | 'interact' | 'hideScrollbar'
+  'container' | 'minPxPerSec' | 'cursorColor' | 'cursorWidth' | 'interact' | 'hideScrollbar'
 >
 
 export type TrackOptions = {
@@ -551,7 +551,8 @@ class MultiTrack extends EventEmitter<MultitrackEvents> {
 
       this.initAudio(track).then((audio) => {
         this.audios[index] = audio
-        this.durations[index] = audio.duration
+        //ORIGINAL CODE: this.durations[index] = audio.duration
+        this.durations[index] = typeof track.options?.duration === 'number' ? track.options.duration : audio.duration
         this.initDurations(this.durations)
 
         const container = this.rendering.containers[index]
